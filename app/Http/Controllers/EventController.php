@@ -12,15 +12,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Event::all();
     }
 
     /**
@@ -28,38 +20,77 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $event = Event::create([
+            'name' => $request->name,
+            'image' => $request->image,
+            'location' => $request->location,
+            'date' => $request->date,
+            'time' => $request->time,
+            'price' => $request->price,
+        ]);
+
+        return $event;
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Event $event)
+    public function show(int $id)
     {
-        //
-    }
+        $event = Event::find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Event $event)
-    {
-        //
+        if(!$event) {
+            return response()->json([
+                    'message' => 'Acara tidak ditemukan'
+                ], 404
+            );
+        }
+
+        return $event;
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Event $event)
+    public function update(Request $request, int $id)
     {
-        //
+        $event = Event::find($id);
+
+        if(!$event) {
+            return response()->json([
+                    'message' => 'Acara tidak ditemukan'
+                ], 404
+            );
+        }
+
+        $event->update([
+            'name' => $request->name,
+            'image' => $request->image,
+            'location' => $request->location,
+            'date' => $request->date,
+            'time' => $request->time,
+            'price' => $request->price,
+        ]);
+
+        return $event;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Event $event)
+    public function destroy(int $id)
     {
-        //
+        $event = Event::find($id);
+
+        if(!$event) {
+            return response()->json([
+                    'message' => 'Acara tidak ditemukan'
+                ], 404
+            );
+        }
+
+        $event->delete();
+
+        return $event;
     }
 }

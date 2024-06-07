@@ -5,12 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Community extends Model
 {
     use HasFactory;
-
-    const CREATED_AT = null;
-    const UPDATED_AT = null;
-
-    protected $guarded = ['id'];
 }

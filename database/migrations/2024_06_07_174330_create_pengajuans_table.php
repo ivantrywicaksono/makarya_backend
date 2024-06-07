@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('pengajuans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image');
-            $table->string('location');
-            $table->date('date');
-            $table->time('time');
-            $table->integer('price', unsigned:true);
+            $table->text('description');
+            $table->string('template_doc');
+            $table->string('pengajuan_doc');
+            $table->string('status');
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('pengajuans');
     }
 };
