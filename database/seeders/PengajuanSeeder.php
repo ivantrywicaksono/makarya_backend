@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Event;
+use App\Models\Pengajuan;
 use Illuminate\Database\Seeder;
 
-class EventSeeder extends Seeder
+class PengajuanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Event::factory(5)->create();
+        Pengajuan::factory(5)->create();
     }
 }

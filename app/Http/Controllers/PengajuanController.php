@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Publication;
+use App\Models\Pengajuan;
 use Illuminate\Http\Request;
 
-class PublicationController extends Controller
+class PengajuanController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Publication::all();
+        return Pengajuan::all();
     }
 
     /**
@@ -20,13 +20,11 @@ class PublicationController extends Controller
      */
     public function store(Request $request)
     {
-        $publication = Publication::create([
-            'description' => $request->description,
-            'image' => $request->image,
-            'created_at' => now()->toDate(),
+        $pengajuan = Pengajuan::create([
+            'name' => $request->name,
         ]);
 
-        return $publication;
+        return $pengajuan;
     }
 
     /**
@@ -34,16 +32,16 @@ class PublicationController extends Controller
      */
     public function show(int $id)
     {
-        $publication = Publication::find($id);
+        $pengajuan = Pengajuan::find($id);
 
-        if(!$publication) {
+        if(!$pengajuan) {
             return response()->json([
-                    'message' => 'Publikasi tidak ditemukan'
+                    'message' => 'Pengajuan tidak ditemukan'
                 ], 404
             );
         }
 
-        return $publication;
+        return $pengajuan;
     }
 
     /**
@@ -51,20 +49,20 @@ class PublicationController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        $publication = Publication::find($id);
+        $pengajuan = Pengajuan::find($id);
 
-        if(!$publication) {
+        if(!$pengajuan) {
             return response()->json([
-                    'message' => 'Publikasi tidak ditemukan'
+                    'message' => 'Pengajuan tidak ditemukan'
                 ], 404
             );
         }
 
-        $publication->update([
-            'description' => $request->description,
+        $pengajuan->update([
+            'name' => $request->name,
         ]);
 
-        return $publication;
+        return $pengajuan;
     }
 
     /**
@@ -72,17 +70,17 @@ class PublicationController extends Controller
      */
     public function destroy(int $id)
     {
-        $publication = Publication::find($id);
+        $pengajuan = Pengajuan::find($id);
 
-        if(!$publication) {
+        if(!$pengajuan) {
             return response()->json([
-                    'message' => 'Publikasi tidak ditemukan'
+                    'message' => 'Pengajuan tidak ditemukan'
                 ], 404
             );
         }
 
-        $publication->delete();
+        $pengajuan->delete();
 
-        return $publication;
+        return $pengajuan;
     }
 }

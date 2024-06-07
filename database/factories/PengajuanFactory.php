@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Publication>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Pengajuan>
  */
-class PublicationFactory extends Factory
+class PengajuanFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,9 +17,11 @@ class PublicationFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => fake()->words(asText:true),
             'description' => fake()->paragraph(),
-            'image' => 'test_pub.png',
-            'created_at' => fake()->date(),
+            'template_doc' => 'template_doc.pdf',
+            'pengajuan_doc' => 'pengajuan_doc.pdf',
+            'status' => fake()->words(asText:true),
         ];
     }
 }
