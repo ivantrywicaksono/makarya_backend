@@ -1,6 +1,10 @@
 <?php
-
 use App\Models\User;
+
+use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\PengajuanController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -9,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
 
 Route::post('/token', function (Request $request) {
     $request->validate([
@@ -27,3 +32,9 @@ Route::post('/token', function (Request $request) {
 
     return $user->createToken($request->device_name, ['*'], now()->addMonth())->plainTextToken;
 });
+
+Route::apiResources([
+    'publication' => PublicationController::class,
+    'event' => EventController::class,
+    'pengajuan' => PengajuanController::class,
+]);
