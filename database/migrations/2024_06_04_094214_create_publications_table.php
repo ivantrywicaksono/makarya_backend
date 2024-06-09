@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Artist;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,6 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('image');
             $table->date('created_at');
+            $table->foreignIdFor(Artist::class);
         });
     }
 

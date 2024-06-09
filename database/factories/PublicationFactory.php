@@ -20,6 +20,7 @@ class PublicationFactory extends Factory
             'description' => fake()->paragraph(),
             'image' => 'test_pub.png',
             'created_at' => fake()->date(),
+            'artist_id' => 2,
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 use App\Models\User;
+use App\Models\Artist;
+use App\Models\Community;
 
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\EventController;
@@ -14,12 +16,41 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::post('/regist', function (Request $request) {
+    $user = User::create([
+        'email' => $request->email,
+        'name' => $request->name,
+        'password' => $request->password,
+    ]);
+
+    $role = $request->role;
+    $user->assignRole($role);
+    $user->getRoleNames()->first();
+
+    switch ($role) {
+        case 'Artist':
+            $profile = Artist::create([
+                'description' => '',
+                'user_id' => $user->id,
+            ]);
+            break;
+
+        case 'Community':
+            $profile = Community::create([
+                'description' => '',
+                'user_id' => $user->id,
+            ]);
+            break;
+    }
+
+    return json_encode($user);
+});
 
 Route::post('/token', function (Request $request) {
     $request->validate([
-        'email' => 'required|email',
+        'email' => 'required',
         'password' => 'required',
-        'device_name' => 'required',
+        'name' => 'required',
     ]);
 
     $user = User::where('email', $request->email)->first();
@@ -30,7 +61,12 @@ Route::post('/token', function (Request $request) {
         ]);
     }
 
-    return $user->createToken($request->device_name, ['*'], now()->addMonth())->plainTextToken;
+    $token = $user->createToken($request->name, ['*'], now()->addMonth())->plainTextToken;
+
+    return json_encode([
+        'user' => $user,
+        'token' => $token,
+    ]);
 });
 
 Route::apiResources([

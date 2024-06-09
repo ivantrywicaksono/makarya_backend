@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Artist;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->string('template_doc');
             $table->string('pengajuan_doc');
             $table->string('status');
+            $table->foreignIdFor(Artist::class);
         });
     }
 

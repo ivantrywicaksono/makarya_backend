@@ -23,6 +23,7 @@ class EventFactory extends Factory
             'date' => fake()->date(),
             'time' => fake()->time(),
             'price' => fake()->numberBetween(0, 200000),
+            'community_id' => 3,
         ];
     }
 }

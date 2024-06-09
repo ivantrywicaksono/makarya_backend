@@ -22,6 +22,7 @@ class PengajuanFactory extends Factory
             'template_doc' => 'template_doc.pdf',
             'pengajuan_doc' => 'pengajuan_doc.pdf',
             'status' => fake()->words(asText:true),
+            'artist_id' => 2,
         ];
     }
 }
