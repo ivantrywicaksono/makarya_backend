@@ -9,7 +9,14 @@ class Pengajuan extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'name',
+        'description',
+        'template_doc',
+        'pengajuan_doc',
+        'status',
+        'artist_id',
+    ];
 
     public $timestamps = false;
 }

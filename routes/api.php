@@ -74,3 +74,5 @@ Route::apiResources([
     'event' => EventController::class,
     'pengajuan' => PengajuanController::class,
 ]);
+
+Route::apiResource('pengajuans', PengajuanController::class);
