@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengajuan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PengajuanController extends Controller
 {
@@ -20,11 +21,24 @@ class PengajuanController extends Controller
      */
     public function store(Request $request)
     {
-        $pengajuan = Pengajuan::create([
-            'name' => $request->name,
-        ]);
+        
+        try {
+            $templateDocPath = $request->file('template_doc')->store('documents');
+            $pengajuanDocPath = $request->file('pengajuan_doc')->store('documents');
+            $pengajuan = Pengajuan::create([ 
+                'id' => $request->id,
+                'name' => $request->name,
+                'description' => $request->description,
+                'template_doc' => $templateDocPath, //$request->template_doc,
+                'pengajuan_doc' => $pengajuanDocPath, //$request->pengajuan_doc,
+                'status' => $request->status,
+                'artist_id' => $request->artist_id,
+            ]);
 
-        return $pengajuan;
+            return response()->json($pengajuan, 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
