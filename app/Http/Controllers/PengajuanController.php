@@ -72,19 +72,21 @@ class PengajuanController extends Controller
     {
         $pengajuan = Pengajuan::find($id);
 
-        if (!$pengajuan) {
+        if (!$pengajuan)
+        
+        
+        {
             return response()->json([
                 'message' => 'Pengajuan tidak ditemukan'
             ], 404);
         }
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'template_doc' => 'nullable|file|mimes:pdf,doc,docx',
-            'pengajuan_doc' => 'required|file|mimes:pdf,doc,docx',
-            'status' => 'nullable|string',
-        ]);
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'description' => 'nullable|string',
+        //     'template_doc' => 'nullable|file|mimes:pdf,doc,docx',
+        //     'pengajuan_doc' => 'required|file|mimes:pdf,doc,docx',
+        // ]);
 
         $templateDocPath = $pengajuan->template_doc;
         if ($request->hasFile('template_doc')) {
@@ -108,11 +110,13 @@ class PengajuanController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'template_doc' => $templateDocPath,
-            'pengajuan_doc' => $pengajuanDocPath,
-            'status' => $request->status,
+            'pengajuan_doc' => $pengajuanDocPath
         ]);
 
-        return response()->json($pengajuan, 200);
+        return response()->json([
+            'status'=>200,
+            'student'=>'student updated successfully'
+        ], 200);
     }
 
     /**
