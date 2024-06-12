@@ -30,6 +30,7 @@ Route::post('/regist', function (Request $request) {
     switch ($role) {
         case 'Artist':
             $profile = Artist::create([
+                'phone_number' => $request->phone_number,
                 'description' => '',
                 'user_id' => $user->id,
             ]);
@@ -46,11 +47,10 @@ Route::post('/regist', function (Request $request) {
     return json_encode($user);
 });
 
-Route::post('/token', function (Request $request) {
+Route::post('/login', function (Request $request) {
     $request->validate([
         'email' => 'required',
         'password' => 'required',
-        'name' => 'required',
     ]);
 
     $user = User::where('email', $request->email)->first();
@@ -61,7 +61,11 @@ Route::post('/token', function (Request $request) {
         ]);
     }
 
-    $token = $user->createToken($request->name, ['*'], now()->addMonth())->plainTextToken;
+    $user->getRoleNames()->first();
+
+    $username = $user->name;
+
+    $token = $user->createToken($username, ['*'], now()->addMonth())->plainTextToken;
 
     return json_encode([
         'user' => $user,
