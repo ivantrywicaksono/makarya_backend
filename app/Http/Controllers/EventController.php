@@ -20,9 +20,13 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('event', 'public');
+        }
+
         $event = Event::create([
             'name' => $request->name,
-            'image' => $request->image,
+            'image' => $imagePath,
             'location' => $request->location,
             'date' => $request->date,
             'time' => $request->time,
@@ -65,7 +69,6 @@ class EventController extends Controller
 
         $event->update([
             'name' => $request->name,
-            'image' => $request->image,
             'location' => $request->location,
             'date' => $request->date,
             'time' => $request->time,

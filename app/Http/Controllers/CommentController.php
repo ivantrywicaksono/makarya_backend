@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Artist;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
-class ArtistController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,27 +26,23 @@ class ArtistController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $user_id)
+    public function show(Comment $comment)
     {
-        $artist = Artist::where('user_id', $user_id)->first();
-        return json_encode($artist);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $user_id)
+    public function update(Request $request, Comment $comment)
     {
-        $artist = Artist::where('user_id', $user_id)->first();
-        $artist->update([
-
-        ]);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Artist $artist)
+    public function destroy(Comment $comment)
     {
         //
     }

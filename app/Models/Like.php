@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Community extends Model
+class Like extends Model
 {
     use HasFactory;
 
@@ -14,8 +14,13 @@ class Community extends Model
 
     public $timestamps = false;
 
-    public function user(): BelongsTo
+    public function publication(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Publication::class);
+    }
+
+    public function artist(): BelongsTo
+    {
+        return $this->belongsTo(Artist::class);
     }
 }

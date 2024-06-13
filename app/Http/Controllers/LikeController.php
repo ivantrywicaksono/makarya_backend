@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Artist;
+use App\Models\Like;
 use Illuminate\Http\Request;
 
-class ArtistController extends Controller
+class LikeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,27 +26,23 @@ class ArtistController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $user_id)
+    public function show(Like $like)
     {
-        $artist = Artist::where('user_id', $user_id)->first();
-        return json_encode($artist);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $user_id)
+    public function update(Request $request, Like $like)
     {
-        $artist = Artist::where('user_id', $user_id)->first();
-        $artist->update([
-
-        ]);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Artist $artist)
+    public function destroy(Like $like)
     {
         //
     }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->date('birthday')->nullable();
             $table->enum('gender', ['L', 'P'])->nullable();
+            $table->string('image');
             $table->foreignIdFor(User::class);
         });
     }

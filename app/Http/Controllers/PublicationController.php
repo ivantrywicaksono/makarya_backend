@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Publication;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class PublicationController extends Controller
 {
@@ -12,7 +14,17 @@ class PublicationController extends Controller
      */
     public function index()
     {
-        return Publication::all();
+        // $publications = Publication::all();
+        $publications = Publication::withCount('likes', 'comments')->get();
+        $publications = $publications->map(function ($p) {
+            $p->artist;
+            $p->comments;
+            $p->comments_count;
+            $p->likes_count;
+            return $p;
+        });
+
+        return $publications;
     }
 
     /**
@@ -20,13 +32,18 @@ class PublicationController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('publication', 'public');
+        }
+
         $publication = Publication::create([
             'description' => $request->description,
-            'image' => $request->image,
+            'image' => $imagePath,
             'created_at' => now()->toDate(),
+            'artist_id' => $request->artist_id,
         ]);
 
-        return $publication;
+        return json_encode($publication);
     }
 
     /**
@@ -43,6 +60,7 @@ class PublicationController extends Controller
             );
         }
 
+        $publication->artist;
         return $publication;
     }
 

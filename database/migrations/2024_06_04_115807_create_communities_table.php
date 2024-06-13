@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('phone_number')->nullable();
             $table->string('group_link')->nullable();
+            $table->string('image');
             $table->foreignIdFor(User::class);
         });
     }

@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\ArtistController;
 use App\Models\User;
 use App\Models\Artist;
 use App\Models\Community;
@@ -11,6 +13,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/', function (Request $request) {
+    $data = [
+        "status"=> "OK",
+        "data"=> [
+            "user" => [
+                "name"=> "Shriyansh",
+                "email"=>"some@email.com",
+                "contact"=>"1234567890",
+                "fcmToken"=>"Token@123"
+            ],
+            "event" => [
+                "status" => "successful",
+                "status_code" => 4,
+            ],
+        ]
+    ];
+
+    return json_encode($data);
+});
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -61,7 +83,16 @@ Route::post('/login', function (Request $request) {
         ]);
     }
 
-    $user->getRoleNames()->first();
+    $role = $user->getRoleNames()->first();
+    switch ($role) {
+        case 'Artist':
+            $user->artist;
+            break;
+
+        case 'Community':
+            $user->community;
+            break;
+    }
 
     $username = $user->name;
 
@@ -77,4 +108,5 @@ Route::apiResources([
     'publication' => PublicationController::class,
     'event' => EventController::class,
     'pengajuan' => PengajuanController::class,
+    'artist' => ArtistController::class,
 ]);
