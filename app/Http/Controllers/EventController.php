@@ -10,9 +10,22 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(int $community_id = 0)
     {
+        if($community_id > 0) {
+            return Event::where('community_id', $community_id)->get();
+        }
         return Event::all();
+    }
+
+    public function getAllByCommunityId(int $community_id)
+    {
+        return Event::where('community_id', $community_id)->get();
+    }
+    
+    public function getLatest()
+    {
+        return Event::orderBy('date', 'desc')->first();
     }
 
     /**
@@ -31,6 +44,7 @@ class EventController extends Controller
             'date' => $request->date,
             'time' => $request->time,
             'price' => $request->price,
+            'community_id' => $request->community_id,
         ]);
 
         return $event;

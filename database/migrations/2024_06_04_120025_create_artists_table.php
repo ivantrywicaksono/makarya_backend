@@ -16,10 +16,8 @@ return new class extends Migration
             $table->id();
             $table->string('name')->default('');
             $table->text('description');
-            $table->string('phone_number')->nullable();
-            $table->date('birthday')->nullable();
-            $table->enum('gender', ['L', 'P'])->nullable();
-            $table->string('image');
+            $table->string('phone_number')->default('');
+            $table->string('image')->default('profile/profile.jpg');
             $table->foreignIdFor(User::class);
         });
     }

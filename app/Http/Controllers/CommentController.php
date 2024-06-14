@@ -10,9 +10,9 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(int $publication_id)
     {
-        //
+        return Comment::where('publication_id', $publication_id)->get();
     }
 
     /**
@@ -20,7 +20,12 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Comment::create([
+            'comment' => $request->comment,
+            'publication_id' => $request->publication_id,
+            'artist_id' => $request->artist_id,
+            'created_at' => now()->toDate(),
+        ]);
     }
 
     /**

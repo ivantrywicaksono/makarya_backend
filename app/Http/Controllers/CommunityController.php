@@ -12,7 +12,7 @@ class CommunityController extends Controller
      */
     public function index()
     {
-        //
+        return Community::all();
     }
 
     /**
@@ -26,17 +26,40 @@ class CommunityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Community $community)
+    public function show(int $user_id)
     {
-        //
+        $community = Community::where('user_id', $user_id)->first();
+        return json_encode($community);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Community $community)
+    public function update(Request $request, int $user_id)
     {
-        //
+        $updatedData = [
+            'name' => $request->name,
+            'description' => $request->description,
+            'phone_number' => $request->phone_number,
+            'group_link' => $request->group_link,
+        ];
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('profile', 'public');
+            $updatedData['image'] = $imagePath;
+        }
+
+        $community = Community::where('user_id', $user_id)->first();
+        if(!$community) {
+            return response()->json([
+                    'message' => 'Komunitas tidak ditemukan'
+                ], 404
+            );
+        }
+        
+        $community->update($updatedData);
+
+        return $community;
     }
 
     /**

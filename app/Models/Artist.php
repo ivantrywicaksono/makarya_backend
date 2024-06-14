@@ -12,10 +12,9 @@ class Artist extends Model
 {
     use HasFactory;
 
-    const CREATED_AT = null;
-    const UPDATED_AT = null;
-
     protected $guarded = ['id'];
+
+    public $timestamps = false;
 
     public function user(): BelongsTo
     {

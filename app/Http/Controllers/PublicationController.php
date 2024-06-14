@@ -27,6 +27,21 @@ class PublicationController extends Controller
         return $publications;
     }
 
+    public function getAllByArtistId(int $artist_id)
+    {
+        $publications = Publication::where('artist_id', $artist_id)->get();
+        $publications = $publications->map(function ($p) {
+            $p->artist;
+            $p->comments;
+            $p->comments_count;
+            $p->likes_count;
+            return $p;
+        });
+
+        return $publications;
+    }
+
+
     /**
      * Store a newly created resource in storage.
      */
@@ -42,6 +57,8 @@ class PublicationController extends Controller
             'created_at' => now()->toDate(),
             'artist_id' => $request->artist_id,
         ]);
+
+        $publication->artist;
 
         return json_encode($publication);
     }
@@ -102,5 +119,16 @@ class PublicationController extends Controller
         $publication->delete();
 
         return $publication;
+    }
+
+    public function popular() {
+        $mostLikedAndCommentedPublications = Publication::withCount(['likes', 'comments'])
+            ->orderBy(DB::raw('likes_count + comments_count'), 'desc')
+            ->first();
+
+        $mostLikedAndCommentedPublications->artist;
+        $mostLikedAndCommentedPublications->comments;
+
+        return response()->json($mostLikedAndCommentedPublications);
     }
 }

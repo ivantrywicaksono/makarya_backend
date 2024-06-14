@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\CommunityController;
 use App\Models\User;
 use App\Models\Artist;
 use App\Models\Community;
@@ -60,6 +61,7 @@ Route::post('/regist', function (Request $request) {
 
         case 'Community':
             $profile = Community::create([
+                'phone_number' => $request->phone_number,
                 'description' => '',
                 'user_id' => $user->id,
             ]);
@@ -104,9 +106,18 @@ Route::post('/login', function (Request $request) {
     ]);
 });
 
+Route::get('/publication/artist/{id}', [PublicationController::class, 'getAllByArtistId']);
+Route::get('/publication/popular', [PublicationController::class, 'popular']);
+
+Route::get('/event/community/{id}', [EventController::class, 'getAllByCommunityId']);
+Route::get('/event/latest', [EventController::class, 'getLatest']);
+
+Route::get('artist/get/{id}', [ArtistController::class, 'get']);
+
 Route::apiResources([
     'publication' => PublicationController::class,
     'event' => EventController::class,
     'pengajuan' => PengajuanController::class,
     'artist' => ArtistController::class,
+    'community' => CommunityController::class,
 ]);
