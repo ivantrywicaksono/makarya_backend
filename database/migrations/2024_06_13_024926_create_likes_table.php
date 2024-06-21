@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\User;
+use App\Models\Artist;
+use App\Models\Publication;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,13 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('artists', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->default('');
-            $table->text('description');
-            $table->string('phone_number')->default('');
-            $table->string('image')->default('profile/profile.jpg');
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Publication::class);
+            $table->foreignIdFor(Artist::class);
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('artists');
+        Schema::dropIfExists('likes');
     }
 };

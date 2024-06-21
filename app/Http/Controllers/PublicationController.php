@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Publication;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class PublicationController extends Controller
 {
@@ -12,21 +14,53 @@ class PublicationController extends Controller
      */
     public function index()
     {
-        return Publication::all();
+        // $publications = Publication::all();
+        $publications = Publication::withCount('likes', 'comments')->get();
+        $publications = $publications->map(function ($p) {
+            $p->artist;
+            $p->comments;
+            $p->comments_count;
+            $p->likes_count;
+            return $p;
+        });
+
+        return $publications;
     }
+
+    public function getAllByArtistId(int $artist_id)
+    {
+        $publications = Publication::where('artist_id', $artist_id)->get();
+        $publications = $publications->map(function ($p) {
+            $p->artist;
+            $p->comments;
+            $p->comments_count;
+            $p->likes_count;
+            return $p;
+        });
+
+        return $publications;
+    }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('publication', 'public');
+        }
+
         $publication = Publication::create([
             'description' => $request->description,
-            'image' => $request->image,
+            'image' => $imagePath,
             'created_at' => now()->toDate(),
+            'artist_id' => $request->artist_id,
         ]);
 
-        return $publication;
+        $publication->artist;
+
+        return json_encode($publication);
     }
 
     /**
@@ -43,6 +77,7 @@ class PublicationController extends Controller
             );
         }
 
+        $publication->artist;
         return $publication;
     }
 
@@ -84,5 +119,16 @@ class PublicationController extends Controller
         $publication->delete();
 
         return $publication;
+    }
+
+    public function popular() {
+        $mostLikedAndCommentedPublications = Publication::withCount(['likes', 'comments'])
+            ->orderBy(DB::raw('likes_count + comments_count'), 'desc')
+            ->first();
+
+        $mostLikedAndCommentedPublications->artist;
+        $mostLikedAndCommentedPublications->comments;
+
+        return response()->json($mostLikedAndCommentedPublications);
     }
 }

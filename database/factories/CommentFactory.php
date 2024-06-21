@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Publication>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Comment>
  */
-class PublicationFactory extends Factory
+class CommentFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,10 +17,10 @@ class PublicationFactory extends Factory
     public function definition(): array
     {
         return [
-            'description' => fake()->paragraph(),
-            'image' => 'publication/test_pub.png',
-            'created_at' => fake()->date(),
+            'comment' => fake()->sentence(),
+            'publication_id' => fake()->numberBetween(1, 5),
             'artist_id' => fake()->numberBetween(1, 2),
+            'created_at' => fake()->date(),
         ];
     }
 }

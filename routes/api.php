@@ -1,4 +1,7 @@
 <?php
+
+use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\CommunityController;
 use App\Models\User;
 use App\Models\Artist;
 use App\Models\Community;
@@ -20,6 +23,25 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 //
+Route::get('/', function (Request $request) {
+    $data = [
+        "status"=> "OK",
+        "data"=> [
+            "user" => [
+                "name"=> "Shriyansh",
+                "email"=>"some@email.com",
+                "contact"=>"1234567890",
+                "fcmToken"=>"Token@123"
+            ],
+            "event" => [
+                "status" => "successful",
+                "status_code" => 4,
+            ],
+        ]
+    ];
+
+    return json_encode($data);
+});
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -39,6 +61,7 @@ Route::post('/regist', function (Request $request) {
     switch ($role) {
         case 'Artist':
             $profile = Artist::create([
+                'phone_number' => $request->phone_number,
                 'description' => '',
                 'user_id' => $user->id,
             ]);
@@ -46,6 +69,7 @@ Route::post('/regist', function (Request $request) {
 
         case 'Community':
             $profile = Community::create([
+                'phone_number' => $request->phone_number,
                 'description' => '',
                 'user_id' => $user->id,
             ]);
@@ -55,11 +79,10 @@ Route::post('/regist', function (Request $request) {
     return json_encode($user);
 });
 
-Route::post('/token', function (Request $request) {
+Route::post('/login', function (Request $request) {
     $request->validate([
         'email' => 'required',
         'password' => 'required',
-        'name' => 'required',
     ]);
 
     $user = User::where('email', $request->email)->first();
@@ -70,7 +93,20 @@ Route::post('/token', function (Request $request) {
         ]);
     }
 
-    $token = $user->createToken($request->name, ['*'], now()->addMonth())->plainTextToken;
+    $role = $user->getRoleNames()->first();
+    switch ($role) {
+        case 'Artist':
+            $user->artist;
+            break;
+
+        case 'Community':
+            $user->community;
+            break;
+    }
+
+    $username = $user->name;
+
+    $token = $user->createToken($username, ['*'], now()->addMonth())->plainTextToken;
 
     return json_encode([
         'user' => $user,
@@ -127,9 +163,18 @@ Route::post('/reset-password', function (Request $request) {
                 : back()->withErrors(['email' => [($status)]]);
 })->middleware('guest')->name('password.update');
 //
+Route::get('/publication/artist/{id}', [PublicationController::class, 'getAllByArtistId']);
+Route::get('/publication/popular', [PublicationController::class, 'popular']);
+
+Route::get('/event/community/{id}', [EventController::class, 'getAllByCommunityId']);
+Route::get('/event/latest', [EventController::class, 'getLatest']);
+
+Route::get('artist/get/{id}', [ArtistController::class, 'get']);
 
 Route::apiResources([
     'publication' => PublicationController::class,
     'event' => EventController::class,
-    'pengajuan' => PengajuanController::class
-    ,]);
+    'pengajuan' => PengajuanController::class,
+    'artist' => ArtistController::class,
+    'community' => CommunityController::class,
+]);

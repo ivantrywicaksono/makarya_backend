@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Artist;
+use App\Models\Community;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,20 +24,48 @@ class DatabaseSeeder extends Seeder
         $communityRole = Role::create(['name' => 'Community']);
 
         $goverment = User::factory()->create([
-            'name' => 'Test Goverment',
+            'name' => 'goverment',
             'email' => 'gov@example.com',
         ]);
         $goverment->assignRole($govermentRole);
 
         $user = User::factory()->create([
-            'name' => 'Test User',
+            'name' => 'artist',
             'email' => 'artist@example.com',
         ]);
+        Artist::create([
+            'name' => 'Test Artist',
+            'phone_number' => '085112345678',
+            'description' => 'Test description',
+            'image' => 'profile/test.png',
+            'user_id' => $user->id,
+        ]);
+
+        $ivan = User::factory()->create([
+            'name' => 'ivantrywicaksono',
+            'email' => 'ivan@me.com',
+        ]);
+        Artist::create([
+            'name' => 'Ivan Try Wicaksono',
+            'phone_number' => '085112341234',
+            'description' => 'Saya adalah seorang seniman yang mengagumi keindahan atas kesederhanaan.',
+            'image' => 'profile/ivan.jpg',
+            'user_id' => $ivan->id,
+        ]);
+
         $user->assignRole($artistRole);
+        $ivan->assignRole($artistRole);
 
         $community = User::factory()->create([
-            'name' => 'Test Community',
+            'name' => 'community',
             'email' => 'community@example.com',
+        ]);
+        Community::create([
+            'name' => 'Test Community',
+            'phone_number' => '085112344321',
+            'description' => 'Kami adalah komunitas seniman yang mengagumi keindahan atas kesederhanaan.',
+            'image' => 'profile/test.png',
+            'user_id' => $community->id,
         ]);
         $community->assignRole($communityRole);
 
@@ -43,6 +73,8 @@ class DatabaseSeeder extends Seeder
             PublicationSeeder::class,
             EventSeeder::class,
             PengajuanSeeder::class,
+            LikeSeeder::class,
+            CommentSeeder::class,
         ]);
     }
 }

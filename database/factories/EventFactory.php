@@ -18,7 +18,7 @@ class EventFactory extends Factory
     {
         return [
             'name' => fake()->words(asText:true),
-            'image' => 'event.png',
+            'image' => 'event/event.png',
             'location' => fake()->streetAddress(),
             'date' => fake()->date(),
             'time' => fake()->time(),

@@ -73,8 +73,8 @@ class PengajuanController extends Controller
         $pengajuan = Pengajuan::find($id);
 
         if (!$pengajuan)
-        
-        
+
+
         {
             return response()->json([
                 'message' => 'Pengajuan tidak ditemukan'
