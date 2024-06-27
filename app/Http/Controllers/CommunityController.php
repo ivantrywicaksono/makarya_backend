@@ -44,8 +44,9 @@ class CommunityController extends Controller
             'group_link' => $request->group_link,
         ];
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('profile', 'public');
+        if ($request->hasFile('image') || !empty($request->image)) {
+            // $imagePath = $request->file('image')->store('profile', 'public');
+            $imagePath = $request->image;
             $updatedData['image'] = $imagePath;
         }
 
@@ -56,7 +57,7 @@ class CommunityController extends Controller
                 ], 404
             );
         }
-        
+
         $community->update($updatedData);
 
         return $community;

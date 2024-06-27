@@ -47,13 +47,15 @@ class PublicationController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('publication', 'public');
+        if ($request->hasFile('image') || !empty($request->image)) {
+            // $imagePath = $request->file('image')->store('publication', 'public');
+            $imagePath = $request->image;
         }
 
         $publication = Publication::create([
             'description' => $request->description,
-            'image' => $imagePath,
+            // 'image' => $imagePath,
+            'image' => $request->image,
             'created_at' => now()->toDate(),
             'artist_id' => $request->artist_id,
         ]);

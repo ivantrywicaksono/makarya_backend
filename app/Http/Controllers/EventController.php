@@ -22,7 +22,7 @@ class EventController extends Controller
     {
         return Event::where('community_id', $community_id)->get();
     }
-    
+
     public function getLatest()
     {
         return Event::orderBy('date', 'desc')->first();
@@ -33,13 +33,15 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('event', 'public');
+        if ($request->hasFile('image') || !empty($request->image)) {
+            $imagePath = $request->image;
+            // $imagePath = $request->file('image')->store('event', 'public');
         }
 
         $event = Event::create([
             'name' => $request->name,
-            'image' => $imagePath,
+            // 'image' => $imagePath,
+            'image' => $request->image,
             'location' => $request->location,
             'date' => $request->date,
             'time' => $request->time,
@@ -47,7 +49,7 @@ class EventController extends Controller
             'community_id' => $request->community_id,
         ]);
 
-        return $event;
+        return json_encode($event);
     }
 
     /**

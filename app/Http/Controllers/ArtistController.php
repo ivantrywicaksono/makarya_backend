@@ -48,8 +48,9 @@ class ArtistController extends Controller
             'phone_number' => $request->phone_number,
         ];
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('profile', 'public');
+        if ($request->hasFile('image') || !empty($request->image)) {
+            $imagePath = $request->image;
+            // $request->file('image')->store('profile', 'public');
             $updatedData['image'] = $imagePath;
         }
 
