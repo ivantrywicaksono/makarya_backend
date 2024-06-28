@@ -10,11 +10,11 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(int $community_id = 0)
+    public function index()
     {
-        if($community_id > 0) {
-            return Event::where('community_id', $community_id)->get();
-        }
+        // if($community_id > 0) {
+        //     return Event::where('community_id', $community_id)->get();
+        // }
         return Event::all();
     }
 

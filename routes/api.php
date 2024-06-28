@@ -23,24 +23,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 //
-Route::get('/', function (Request $request) {
-    $data = [
-        "status"=> "OK",
-        "data"=> [
-            "user" => [
-                "name"=> "Shriyansh",
-                "email"=>"some@email.com",
-                "contact"=>"1234567890",
-                "fcmToken"=>"Token@123"
-            ],
-            "event" => [
-                "status" => "successful",
-                "status_code" => 4,
-            ],
-        ]
-    ];
-
-    return json_encode($data);
+Route::post('/tess', function (Request $request) {
+    return json_encode(dd($request));
 });
 
 Route::get('/user', function (Request $request) {
